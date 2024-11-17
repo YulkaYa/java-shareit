@@ -18,7 +18,7 @@ import ru.practicum.shareit.common.Update;
 @Data
 @RequiredArgsConstructor
 public class ItemDto extends StorageData {
-    @NotNull(groups = Update.class, message = "Id при обновлении не должен быть пустым")
+    @NotNull(groups = Update.class, message = "Id при обновлении не должен быть пустым") //todo убрать update.class так как владелец должен быть всегда указан?
     private long ownerId;
     @NotBlank(groups = Create.class, message = "Название не может быть пустым")
     @Pattern(regexp = ".*\\S+.*", message = "Название не может состоять из пробелов или быть пустым")
@@ -28,5 +28,5 @@ public class ItemDto extends StorageData {
     private String description;
     @NotBlank(groups = Create.class, message = "Доступность не может быть пустым")
     @Pattern(regexp = ".*\\S+.*", message = "Доступность не может состоять из пробелов или быть пустым")
-    private String available;
+    private String isAvailable;
 }

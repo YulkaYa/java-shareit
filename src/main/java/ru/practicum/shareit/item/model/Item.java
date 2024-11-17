@@ -15,5 +15,5 @@ public class Item extends StorageData {
     private long ownerId;
     private String name;
     private String description;
-    private boolean available;
+    private boolean isAvailable;
 }
