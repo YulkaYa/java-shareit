@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.DuplicatedDataException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.dal.UserBaseRepository;
@@ -23,10 +24,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto create(UserDto userDto) {
         User user = userMapper.toUser(userDto);
-        return userMapper.userToUserDto(userRepository.create(user));
+        return userMapper.userToUserDto(userRepository.save(user));
     }
 
     @Override
+    @Transactional
     public UserDto update(long userId, UserDto userDto) {
         if (userDto.getEmail() != null) {
             Optional<User> userWithSameEmail = userRepository.findByEmail(userDto.getEmail());
@@ -34,7 +36,7 @@ public class UserServiceImpl implements UserService {
                 throw new DuplicatedDataException("Данный имейл уже используется");
             }
         }
-        User userToUpdate = userRepository.get(userId)
+        User userToUpdate = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь с таким id не найден"));
         userToUpdate = userMapper.updateFromDto(userDto, userToUpdate);
         return userMapper.userToUserDto(userRepository.update(userToUpdate));
@@ -42,14 +44,16 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    @Transactional
     public void delete(long id) {
-        userRepository.delete(id);
-
+        User userToDelete = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Пользователь с таким id не найден"));
+        userRepository.delete(userToDelete);
     }
 
     @Override
     public UserDto get(long id) {
-        return userMapper.userToUserDto(userRepository.get(id)
+        return userMapper.userToUserDto(userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Пользователь с id=" + id + " не найден")));
     }
 }

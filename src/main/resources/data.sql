@@ -1,2 +1,2 @@
 insert into users (id, name, email)
-values (1, 'testLogin','yulkaTEST@ya.ru') ON CONFLICT(id) DO NOTHING;
+values (0, 'testLogin','yulkaTESdddT@ya.ru') ON CONFLICT(id) DO NOTHING;

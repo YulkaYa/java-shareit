@@ -1,4 +1,4 @@
-package ru.practicum.shareit.item.dal;
+package ru.practicum.shareit.item.dal.item;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Primary
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Component
 public class InMemoryItemRepository implements ItemBaseRepository {
@@ -51,7 +50,7 @@ public class InMemoryItemRepository implements ItemBaseRepository {
     public List<Item> getItemsByUserId(long userId) {
         return getAll()
                 .stream()
-                .filter(item -> item.getOwnerId() == userId)
+                .filter(item -> item.getOwner().getId() == userId)
                 .collect(Collectors.toList());
     }
 

@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Primary
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Component
 public class InMemoryUserRepository implements UserBaseRepository {
@@ -19,7 +18,7 @@ public class InMemoryUserRepository implements UserBaseRepository {
     private long count = 0;
 
     @Override
-    public User create(User data) {
+    public User save(User data) {
         if (findByEmail(data.getEmail()).isPresent()) {
             throw new DuplicatedDataException("Данный имейл уже используется");
         }
@@ -30,18 +29,18 @@ public class InMemoryUserRepository implements UserBaseRepository {
 
     @Override
     public User update(User data) {
-        User user = get(data.getId()).get();
+        User user = findById(data.getId()).get();
         user = data;
-        return get(data.getId()).get();
+        return findById(data.getId()).get();
     }
 
     @Override
-    public void delete(long id) {
-        users.remove(get(id).orElseThrow());
+    public void delete(User user) {
+        users.remove(user);
     }
 
     @Override
-    public Optional<User> get(long id) {
+    public Optional<User> findById(long id) {
         for (User user : users) {
             if (user.getId() == id) {
                 return Optional.of(user);

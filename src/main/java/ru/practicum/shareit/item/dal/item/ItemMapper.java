@@ -1,4 +1,4 @@
-package ru.practicum.shareit.item.dal;
+package ru.practicum.shareit.item.dal.item;
 
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
@@ -16,7 +16,7 @@ public interface ItemMapper {
     ItemDto itemToItemDto(Item item);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "ownerId", ignore = true)
+    @Mapping(target = "owner", ignore = true)
     Item updateFromDto(ItemDto itemDto, @MappingTarget Item item);
 
     List<ItemDto> listItemToListItemDto(List<Item> listItems);

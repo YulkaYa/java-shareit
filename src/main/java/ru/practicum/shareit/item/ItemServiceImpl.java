@@ -6,8 +6,8 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.NotFoundException;
-import ru.practicum.shareit.item.dal.ItemBaseRepository;
-import ru.practicum.shareit.item.dal.ItemMapper;
+import ru.practicum.shareit.item.dal.item.ItemBaseRepository;
+import ru.practicum.shareit.item.dal.item.ItemMapper;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.dal.UserBaseRepository;
@@ -24,7 +24,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto create(Long userId, ItemDto itemDto) {
-        userRepository.get(userId).orElseThrow(() -> new NotFoundException("Пользователь с id = " + userId + "не найден"));
+        userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Пользователь с id = " + userId + "не найден"));
         itemDto.setOwnerId(userId);
         Item item = itemMapper.toItem(itemDto);
         return itemMapper.itemToItemDto(itemRepository.create(item));
@@ -46,7 +46,7 @@ public class ItemServiceImpl implements ItemService {
 
         Item itemToUpdate = itemRepository.get(itemId)
                 .orElseThrow(() -> new NotFoundException("Товар с id=" + itemId + " не найден"));
-        if (userId != itemToUpdate.getOwnerId()) {
+        if (userId != itemToUpdate.getOwner().getId()) {
             throw new NotFoundException("Id владельца и id пользователя в запросе не совпадают");
         }
         itemToUpdate = itemMapper.updateFromDto(itemDto, itemToUpdate);
