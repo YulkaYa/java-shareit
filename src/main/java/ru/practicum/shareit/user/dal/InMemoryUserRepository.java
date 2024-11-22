@@ -17,7 +17,6 @@ public class InMemoryUserRepository implements UserBaseRepository {
     private final List<User> users = new ArrayList<>();
     private long count = 0;
 
-    @Override
     public User save(User data) {
         if (findByEmail(data.getEmail()).isPresent()) {
             throw new DuplicatedDataException("Данный имейл уже используется");

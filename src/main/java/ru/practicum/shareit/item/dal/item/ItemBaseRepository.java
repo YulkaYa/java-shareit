@@ -7,15 +7,16 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ItemBaseRepository {
-    Item create(Item data);
+
+    Item save(Item data);
 
     Item update(Item data);
 
-    Optional<Item> get(long id);
+    Optional<Item> findById(long id);
 
-    List<Item> getAll();
+    List<Item> findAll();
 
-    List<Item> getItemsByUserId(long userId);
+    List<Item> findByOwnerId(long ownerId);
 
-    List<Item> searchByDescriptionOrName(String text);
+    List<Item> findByDescriptionOrName(String text);
 }

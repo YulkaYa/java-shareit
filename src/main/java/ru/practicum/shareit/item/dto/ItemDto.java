@@ -28,5 +28,5 @@ public class ItemDto extends StorageData {
     private String description;
     @NotBlank(groups = Create.class, message = "Доступность не может быть пустым")
     @Pattern(regexp = ".*\\S+.*", message = "Доступность не может состоять из пробелов или быть пустым")
-    private String isAvailable;
+    private String available;
 }

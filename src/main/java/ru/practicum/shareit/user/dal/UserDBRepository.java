@@ -1,7 +1,9 @@
 package ru.practicum.shareit.user.dal;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.user.User;
 
 import java.util.Optional;
@@ -12,10 +14,7 @@ public interface UserDBRepository extends JpaRepository<User, Long>, UserBaseRep
     User save(User data);
 
     @Override
-    Optional<User> findByEmail(String email);
-    @Override
     default User update(User data) {
-        save(data);
-        return findById(data.getId()).get();
+        return save(data);
     }
 }

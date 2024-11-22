@@ -2,7 +2,6 @@ package ru.practicum.shareit.item.dal.item;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.item.model.Item;
 
@@ -18,7 +17,7 @@ public class InMemoryItemRepository implements ItemBaseRepository {
     private long count = 0;
 
     @Override
-    public Item create(Item data) {
+    public Item save(Item data) {
         data.setId(++count);
         items.add(data);
         return data;
@@ -26,13 +25,13 @@ public class InMemoryItemRepository implements ItemBaseRepository {
 
     @Override
     public Item update(Item data) {
-        Item item = get(data.getId()).get();
+        Item item = findById(data.getId()).get();
         item = data;
-        return get(data.getId()).get();
+        return findById(data.getId()).get();
     }
 
     @Override
-    public Optional<Item> get(long id) {
+    public Optional<Item> findById(long id) {
         for (Item item : items) {
             if (item.getId() == id) {
                 return Optional.of(item);
@@ -42,20 +41,20 @@ public class InMemoryItemRepository implements ItemBaseRepository {
     }
 
     @Override
-    public List<Item> getAll() {
+    public List<Item> findAll() {
         return new ArrayList<>(items);
     }
 
     @Override
-    public List<Item> getItemsByUserId(long userId) {
-        return getAll()
+    public List<Item> findByOwnerId(long ownerId) {
+        return findAll()
                 .stream()
-                .filter(item -> item.getOwner().getId() == userId)
+                .filter(item -> item.getOwner().getId() == ownerId)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<Item> searchByDescriptionOrName(String text) {
+    public List<Item> findByDescriptionOrName(String text) {
         List<Item> itemListByText = new ArrayList<>();
         if (!text.isBlank()) {
             text = text.toUpperCase();

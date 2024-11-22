@@ -10,6 +10,7 @@ import ru.practicum.shareit.item.dal.item.ItemBaseRepository;
 import ru.practicum.shareit.item.dal.item.ItemMapper;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.dal.UserBaseRepository;
 
 import java.util.List;
@@ -24,27 +25,27 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto create(Long userId, ItemDto itemDto) {
-        userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Пользователь с id = " + userId + "не найден"));
+        User owner = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Пользователь с id = " + userId + "не найден"));
         itemDto.setOwnerId(userId);
-        Item item = itemMapper.toItem(itemDto);
-        return itemMapper.itemToItemDto(itemRepository.create(item));
+        Item item = itemMapper.toItem(itemDto, owner);
+        return itemMapper.itemToItemDto(itemRepository.save(item));
     }
 
     @Override
     public ItemDto getItemById(long itemId) {
-        return itemMapper.itemToItemDto((itemRepository.get(itemId)
+        return itemMapper.itemToItemDto((itemRepository.findById(itemId)
                 .orElseThrow(() -> new NotFoundException("Товар с id=" + itemId + " не найден"))));
     }
 
     @Override
     public List<ItemDto> getItemsByUserId(long userId) {
-        return itemMapper.listItemToListItemDto(itemRepository.getItemsByUserId(userId));
+        return itemMapper.listItemToListItemDto(itemRepository.findByOwnerId(userId));
     }
 
     @Override
     public ItemDto update(Long userId, Long itemId, ItemDto itemDto) {
 
-        Item itemToUpdate = itemRepository.get(itemId)
+        Item itemToUpdate = itemRepository.findById(itemId)
                 .orElseThrow(() -> new NotFoundException("Товар с id=" + itemId + " не найден"));
         if (userId != itemToUpdate.getOwner().getId()) {
             throw new NotFoundException("Id владельца и id пользователя в запросе не совпадают");
@@ -55,6 +56,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDto> searchItemsByText(String text) {
-        return itemMapper.listItemToListItemDto(itemRepository.searchByDescriptionOrName(text));
+        return itemMapper.listItemToListItemDto(itemRepository.findByDescriptionOrName(text));
     }
 }

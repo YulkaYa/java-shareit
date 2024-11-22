@@ -17,6 +17,7 @@ import java.util.Optional;
 @Service
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@Transactional
 public class UserServiceImpl implements UserService {
     private final UserBaseRepository userRepository;
     private final UserMapper userMapper = Mappers.getMapper(UserMapper.class);
@@ -28,7 +29,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public UserDto update(long userId, UserDto userDto) {
         if (userDto.getEmail() != null) {
             Optional<User> userWithSameEmail = userRepository.findByEmail(userDto.getEmail());
@@ -44,7 +44,6 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    @Transactional
     public void delete(long id) {
         User userToDelete = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Пользователь с таким id не найден"));
@@ -52,6 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDto get(long id) {
         return userMapper.userToUserDto(userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Пользователь с id=" + id + " не найден")));
