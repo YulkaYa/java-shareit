@@ -29,8 +29,4 @@ public interface CommentMapper {
     @Mapping(source = "item.id", target = "itemId")
     @Mapping(source = "author.name", target = "authorName")
     List<CommentDto> listCommentToListCommentDto(List<Comment> listComments);
-
-/*   todo @Mapping(source = "author.name", target = "authorName")
-    @Mapping(source = "item.id", target = "itemId")
-    CommentDto commentDtoOnlyTextToCommentDto(CommentDtoCreatedText commentDtoOnlyText);*/
 }

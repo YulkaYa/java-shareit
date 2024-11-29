@@ -1,20 +1,12 @@
 package ru.practicum.shareit.item.dto;
 
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.common.Create;
 import ru.practicum.shareit.common.StorageData;
-import ru.practicum.shareit.common.Update;
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.User;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 /**

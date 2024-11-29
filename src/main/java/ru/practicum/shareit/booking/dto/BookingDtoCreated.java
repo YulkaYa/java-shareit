@@ -1,7 +1,5 @@
 package ru.practicum.shareit.booking.dto;
 
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +8,6 @@ import ru.practicum.shareit.booking.Status;
 import ru.practicum.shareit.common.Create;
 import ru.practicum.shareit.common.StorageData;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 /**
@@ -27,5 +24,5 @@ public class BookingDtoCreated extends StorageData {
     @NotNull(groups = Create.class, message = "Дата окончания аренды не может быть пустым")
     private LocalDateTime end;
     @NotNull(groups = Create.class, message = "Статус не может быть пустым")
-    private Status status = Status.WAITING ;
+    private Status status = Status.WAITING;
 }

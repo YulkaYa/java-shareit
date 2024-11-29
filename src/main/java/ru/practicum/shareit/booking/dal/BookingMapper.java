@@ -1,15 +1,15 @@
 package ru.practicum.shareit.booking.dal;
 
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
 import ru.practicum.shareit.booking.Booking;
-import ru.practicum.shareit.booking.BookingController;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingDtoCreated;
-import ru.practicum.shareit.booking.dto.BookingDtoFull;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
-
 
 import java.util.List;
 
@@ -23,16 +23,6 @@ public interface BookingMapper {
     Booking bookingDtoCreatedltoBooking(User booker, Item item, BookingDtoCreated bookingDtoCreated);
 
     BookingDto boookingToBookingDto(Booking booking);
+
     List<BookingDto> listBookingToListBookingDto(List<Booking> listBookings);
-
-
-
-/*    todo BookingDtoFull bookingDtoCreatedtoBookingDtoFull(BookingDtoCreated bookingDtoCreated);*/
-
-
-/*    BookingDtoCreated bookingToBookingDtoCreated(Booking booking);
-
-    Booking updateFromDto(BookingDtoCreated bookingDtoCreated, @MappingTarget Booking booking);
-
-    List<BookingDtoCreated> listBookingToListBookingDto(List<Booking> listBookings);*/
 }

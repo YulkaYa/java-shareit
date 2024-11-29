@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.Booking;
-import ru.practicum.shareit.booking.Status;
 import ru.practicum.shareit.booking.dal.BookingDBRepository;
 import ru.practicum.shareit.booking.dal.BookingMapper;
 import ru.practicum.shareit.exception.ConditionsNotMetException;
@@ -18,16 +17,14 @@ import ru.practicum.shareit.item.dal.item.ItemBaseRepository;
 import ru.practicum.shareit.item.dal.item.ItemMapper;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.CommentDtoCreatedText;
-import ru.practicum.shareit.item.dto.ItemDtoWithoutDates;
 import ru.practicum.shareit.item.dto.ItemDtoFull;
+import ru.practicum.shareit.item.dto.ItemDtoWithoutDates;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.dal.UserBaseRepository;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -58,19 +55,18 @@ public class ItemServiceImpl implements ItemService {
         ItemDtoFull itemDtoFull = itemMapper.itemToItemDtoFullPartly(item);
 
         addBookingsToItemDtoFull(userId, itemId, itemDtoFull);
-        return (T)itemDtoFull;
+        return (T) itemDtoFull;
     }
 
     private void addBookingsToItemDtoFull(long userId, long itemId, ItemDtoFull itemDtoFull) {
         Sort sortByStart = Sort.by(Sort.Direction.ASC, "start");
-        Sort sortByEnd = Sort.by(Sort.Direction.ASC, "end");
         Booking lastBooking;
         Booking nextBooking;
         LocalDateTime now = LocalDateTime.now();
 
         // Находим список бронирований, стартующих до текущей даты, и сортируем по возрастанию даты оконачания брони
         List<Booking> lastBookings = bookingDBRepository.findByItemIdAndStartIsBeforeAndEndIsAfter(itemId,
-                now, now, sortByStart);        System.out.println("это lastbookings" + lastBookings);
+                now, now, sortByStart);
         LocalDateTime endOfLastBooking;
 
         // Если последних броней нет, то последнее бронирование оставляем пустым, а дата старта след. брони = текущая
@@ -80,21 +76,10 @@ public class ItemServiceImpl implements ItemService {
         } else {
             lastBooking = lastBookings.getLast();
             endOfLastBooking = lastBooking.getEnd(); // Дата след. брони = дата окончания последней брони
-
-            // Если есть подтвержденное неоконченное бронирование, то берем его, как последнее,
-            // а его дату окончания ждя отсчета следующей брони
-/*  todo          for (Booking booking: lastBookings) {
-                if( booking.getStatus().equals(Status.APPROVED) &&
-                        booking.getEnd().isAfter(now)) {
-                    endOfLastBooking = booking.getEnd();
-                    lastBooking = booking;
-                    break;
-                }
-            }*/
         }
 
         List<Booking> nextBookings = bookingDBRepository.findByItemIdAndStartIsAfter(userId,
-                endOfLastBooking, sortByStart); System.out.println("это nextbookings" + lastBookings); //todo
+                endOfLastBooking, sortByStart);
         if (nextBookings.isEmpty()) {
             nextBooking = null;
         } else {
@@ -110,7 +95,7 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemDtoFull> getItemsByUserId(long userId) {
         List<ItemDtoFull> listItemDtoFull = itemMapper.listItemToListItemDtoFull(itemRepository
                 .findByOwnerId(userId));
-        for (ItemDtoFull itemDtoFull: listItemDtoFull) {
+        for (ItemDtoFull itemDtoFull : listItemDtoFull) {
             long itemId = itemDtoFull.getId();
             addBookingsToItemDtoFull(userId, itemId, itemDtoFull);
         }
@@ -139,8 +124,8 @@ public class ItemServiceImpl implements ItemService {
                 .orElseThrow(() -> new NotFoundException("Пользователь с id = " + userId + "не найден"));
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new NotFoundException("Товар с id=" + itemId + " не найден"));
-        List<Booking> bookingList = bookingDBRepository.findByItemIdAndBookerIdAndEndIsBefore(itemId,userId, LocalDateTime.now());
-        if (bookingList.size() == 0) {
+        List<Booking> bookingList = bookingDBRepository.findByItemIdAndBookerIdAndEndIsBefore(itemId, userId, LocalDateTime.now());
+        if (bookingList.isEmpty()) {
             throw new ConditionsNotMetException("Бронь для товара с id = " + itemId + " и пользователя с id = " + userId + " не найдена");
         }
 

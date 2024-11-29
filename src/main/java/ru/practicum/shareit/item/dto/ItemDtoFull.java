@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.common.Create;
-import ru.practicum.shareit.common.StorageData;
 import ru.practicum.shareit.common.Update;
 
 import java.util.List;
@@ -21,7 +20,7 @@ import java.util.List;
 @Data
 @RequiredArgsConstructor
 public class ItemDtoFull extends ItemDtoWithoutDates {
-    @NotNull(groups = Update.class, message = "Id при обновлении не должен быть пустым") //todo убрать update.class так как владелец должен быть всегда указан?
+    @NotNull(groups = Update.class, message = "Id при обновлении не должен быть пустым")
     private long ownerId;
     @NotBlank(groups = Create.class, message = "Название не может быть пустым")
     @Pattern(regexp = ".*\\S+.*", message = "Название не может состоять из пробелов или быть пустым")

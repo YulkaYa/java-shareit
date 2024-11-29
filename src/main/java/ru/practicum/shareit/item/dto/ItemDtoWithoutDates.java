@@ -20,7 +20,7 @@ import java.util.List;
 @Data
 @RequiredArgsConstructor
 public class ItemDtoWithoutDates extends StorageData {
-    @NotNull(groups = Update.class, message = "Id при обновлении не должен быть пустым") //todo убрать update.class так как владелец должен быть всегда указан?
+    @NotNull(groups = Update.class, message = "Id при обновлении не должен быть пустым")
     private long ownerId;
     @NotBlank(groups = Create.class, message = "Название не может быть пустым")
     @Pattern(regexp = ".*\\S+.*", message = "Название не может состоять из пробелов или быть пустым")

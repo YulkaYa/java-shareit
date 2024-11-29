@@ -1,7 +1,5 @@
 package ru.practicum.shareit.booking.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -9,11 +7,7 @@ import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.booking.Status;
 import ru.practicum.shareit.common.Create;
 import ru.practicum.shareit.common.StorageData;
-import ru.practicum.shareit.common.Update;
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.User;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 /**

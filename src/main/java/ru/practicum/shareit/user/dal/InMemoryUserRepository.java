@@ -2,7 +2,6 @@ package ru.practicum.shareit.user.dal;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.exception.DuplicatedDataException;
 import ru.practicum.shareit.user.User;

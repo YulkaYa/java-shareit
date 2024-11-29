@@ -37,7 +37,7 @@ public class BookingController {
     @RequestBody BookingDtoCreated bookingDtoCreated) {
         Booking booking = bookingService.create(userId, bookingDtoCreated);
         BookingController.log.info("Создано новое бронирование с id={}", booking.getId());
-        return  booking;
+        return booking;
     }
 
     @PatchMapping("/{bookingId}")
@@ -48,31 +48,33 @@ public class BookingController {
                               @PathVariable final long bookingId,
                               @RequestParam(defaultValue = "false") final boolean approved) {
         BookingDto booking = bookingService.approve(userId, bookingId, approved);
-        BookingController.log.info("Статус бронирования = {}" ,  booking.getStatus());
-        return  booking;
+        BookingController.log.info("Статус бронирования = {}", booking.getStatus());
+        return booking;
     }
+
     @GetMapping
     public List<BookingDto> getAll(@RequestHeader(X_SHARER_USER_ID) long userId,
                                    @RequestParam(defaultValue = "ALL") final State state) {
         List<BookingDto> bookingList = bookingService.getAllByUser(userId, state);
         BookingController.log.info("Пользователь с id={} получил информацию о бронированиях", userId);
-        return  bookingList;
+        return bookingList;
     }
+
     @GetMapping("/{bookingId}")
     public BookingDto get(@RequestHeader(X_SHARER_USER_ID) long userId, @PathVariable() final long bookingId) {
         BookingDto booking = bookingService.get(userId, bookingId);
         BookingController.log.info("Пользователь с id={} получил информацию о бронировании", userId);
-        return  booking;
+        return booking;
     }
 
     @GetMapping("/owner")
     public List<BookingDto> getAllByOwner(@RequestHeader(X_SHARER_USER_ID) long userId,
-                                   @RequestParam(defaultValue = "ALL") final State state) {
+                                          @RequestParam(defaultValue = "ALL") final State state) {
         List<BookingDto> bookingList = bookingService.getAllByOwner(userId, state);
-        if (bookingList.size() == 0) {
+        if (bookingList.isEmpty()) {
             throw new NotFoundException("Бронь для пользователя с id = " + userId + " не найдена");
         }
         BookingController.log.info("Пользователь с id={} получил информацию о бронированиях", userId);
-        return  bookingList;
+        return bookingList;
     }
 }
