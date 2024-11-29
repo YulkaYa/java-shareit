@@ -1,5 +1,7 @@
 package ru.practicum.shareit.item.dto;
 
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -9,6 +11,11 @@ import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.common.Create;
 import ru.practicum.shareit.common.StorageData;
 import ru.practicum.shareit.common.Update;
+import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.user.User;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
 
 /**
  * TODO Sprint add-controllers.
@@ -18,15 +25,12 @@ import ru.practicum.shareit.common.Update;
 @Data
 @RequiredArgsConstructor
 public class CommentDto extends StorageData {
-    @NotNull(groups = Update.class, message = "Id при обновлении не должен быть пустым") //todo убрать update.class так как владелец должен быть всегда указан?
-    private long ownerId;
-    @NotBlank(groups = Create.class, message = "Название не может быть пустым")
-    @Pattern(regexp = ".*\\S+.*", message = "Название не может состоять из пробелов или быть пустым")
-    private String name;
-    @NotBlank(groups = Create.class, message = "Описание не может быть пустым")
-    @Pattern(regexp = ".*\\S+.*", message = "Описание не может состоять из пробелов или быть пустым")
-    private String description;
-    @NotBlank(groups = Create.class, message = "Доступность не может быть пустым")
-    @Pattern(regexp = ".*\\S+.*", message = "Доступность не может состоять из пробелов или быть пустым")
-    private String isAvailable;
+    @NotBlank(groups = Create.class, message = "Товар должен быть указан")
+    private long itemId;
+    @NotBlank(groups = Create.class, message = "Владелец комментария должен быть указан")
+    private String authorName;
+    @NotBlank(groups = Create.class, message = "Текст комментария не может быть пустым")
+    private String text;
+    @NotBlank(groups = Create.class, message = "Время создания комментария не может быть пустым")
+    private LocalDateTime created;
 }

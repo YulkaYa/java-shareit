@@ -2,8 +2,6 @@ package ru.practicum.shareit.request.dal;
 
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
-import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 

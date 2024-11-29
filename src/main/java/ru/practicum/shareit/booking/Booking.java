@@ -9,6 +9,7 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @SuperBuilder(toBuilder = true)
 @Data
@@ -18,14 +19,23 @@ import java.time.Instant;
 public class Booking extends StorageData {
     @ManyToOne
     @JoinColumn(name = "item_id")
-    Item item;
+    private Item item;
     @ManyToOne
     @JoinColumn(name = "booker_id")
-    User booker;
-    @Enumerated
-    Status status;
+    private User booker;
+    @Enumerated(EnumType.STRING)
+    private Status status;
     @Column(name = "start_date")
-    private Instant startDate = Instant.now();
+    private LocalDateTime start;
     @Column(name = "end_date")
-    private Instant endDate;
+    private LocalDateTime end;
+
+    Booking setStatusByIsApproved(boolean isApproved) {
+        if (isApproved) {
+            this.setStatus(Status.APPROVED);
+        } else {
+            this.setStatus(Status.REJECTED);
+        }
+        return this;
+    }
 }

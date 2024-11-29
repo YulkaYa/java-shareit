@@ -9,8 +9,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.common.Create;
 import ru.practicum.shareit.common.Update;
-import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.CommentDto;
+import ru.practicum.shareit.item.dto.CommentDtoCreatedText;
+import ru.practicum.shareit.item.dto.ItemDtoWithoutDates;
+import ru.practicum.shareit.item.dto.ItemDtoFull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,40 +27,53 @@ import java.util.List;
 @RequestMapping("/items")
 public class ItemController {
     private final ItemService itemService;
+    private static final String X_SHARER_USER_ID = "X-Sharer-User-Id";
 
     @PostMapping
     @Validated(Create.class)
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDto create(@RequestHeader("X-Sharer-User-Id") Long userId, @Valid
-    @RequestBody ItemDto itemDto) {
-        ItemDto itemCreatedDto = itemService.create(userId, itemDto);
-        ItemController.log.info("Создан новый товар с id={}", itemDto.getId());
+    public ItemDtoWithoutDates create(@RequestHeader(X_SHARER_USER_ID) long userId, @Valid
+    @RequestBody ItemDtoWithoutDates itemDtoWithoutDates) {
+        ItemDtoWithoutDates itemCreatedDto = itemService.create(userId, itemDtoWithoutDates);
+        ItemController.log.info("Создан новый товар с id={}", itemCreatedDto.getId());
         return itemCreatedDto;
     }
 
     @GetMapping("/{itemId}")
     @ResponseStatus(HttpStatus.OK)
-    public ItemDto getItemById(@PathVariable(name = "itemId") long itemId) {
+    public ItemDtoFull getItemById(@PathVariable(name = "itemId") long itemId) {
         return itemService.getItemById(itemId);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ItemDto> getItemsByUserId(@RequestHeader("X-Sharer-User-Id") long userId) {
+    public List<ItemDtoWithoutDates> getItemsByUserId(@RequestHeader(X_SHARER_USER_ID) long userId) {
         return itemService.getItemsByUserId(userId);
     }
 
     @PatchMapping("/{itemId}")
     @Validated({Update.class})
     @ResponseStatus(HttpStatus.OK)
-    public ItemDto update(@RequestHeader("X-Sharer-User-Id") Long userId, @PathVariable final Long itemId, @Valid @RequestBody final ItemDto itemDto) {
+    public ItemDtoWithoutDates update(@RequestHeader(X_SHARER_USER_ID) long userId,
+                                      @PathVariable final long itemId,
+                                      @Valid @RequestBody final ItemDtoWithoutDates itemDtoWithoutDates) {
         ItemController.log.info("Обновляем товар с id={}", itemId);
-        return itemService.update(userId, itemId, itemDto);
+        return itemService.update(userId, itemId, itemDtoWithoutDates);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/search")
-    public List<ItemDto> searchItemsByText(@RequestHeader("X-Sharer-User-Id") long userId, final String text) {
+    public List<ItemDtoWithoutDates> searchItemsByText(@RequestHeader(X_SHARER_USER_ID) long userId, final String text) {
+        if (text.isBlank()) {
+            return new ArrayList<>();
+        }
         return itemService.searchItemsByText(text);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @Validated({Create.class})
+    @PostMapping("/{itemId}/comment")
+    public CommentDto createComment(@RequestHeader(X_SHARER_USER_ID) long userId, @PathVariable final long itemId, @Valid @RequestBody final CommentDtoCreatedText commentDtoOnlyText) {
+        return itemService.createComment(userId, itemId, commentDtoOnlyText);
     }
 }

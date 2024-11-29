@@ -34,21 +34,21 @@ public class UserController {
     @PatchMapping("/{userId}")
     @Validated(Update.class)
     @ResponseStatus(HttpStatus.OK)
-    public UserDto update(@PathVariable final Long userId, @Valid @RequestBody final UserDto userDto) {
+    public UserDto update(@PathVariable final long userId, @Valid @RequestBody final UserDto userDto) {
         UserController.log.info("Обновляем пользователя с id={}", userId);
         return userService.update(userId, userDto);
     }
 
     @GetMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDto get(@PathVariable final Long userId) {
+    public UserDto get(@PathVariable final long userId) {
         UserController.log.info("Получаем пользователя с id={}", userId);
         return this.userService.get(userId);
     }
 
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable final Long userId) {
+    public void delete(@PathVariable final long userId) {
         UserController.log.info("Удаляем пользователя с id={}", userId);
         this.userService.delete(userId);
     }

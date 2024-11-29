@@ -4,6 +4,7 @@ import org.apache.coyote.Request;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.User;
@@ -20,6 +21,9 @@ public interface ItemDBRepository extends JpaRepository<Item, Long>, ItemBaseRep
         return save(data);
     }
 
-    @Query("select distinct it from Item it where it.description like %?1 or it.name like %?1")
-    List<Item> findByDescriptionOrName(String text);
+    @Query("select i from Item i " +
+            "where (upper(i.name) like upper(concat('%', ?1, '%')) " +
+            "or upper(i.description) like upper(concat('%', ?1, '%'))) and i.available = true")
+   // @Query("select it from Item as it  JOIN FETCH it.owner as ow where it.description like %:place% or it.name like %:place%")
+    List<Item> findByDescriptionOrName(String searchText);
 }

@@ -3,7 +3,7 @@ package ru.practicum.shareit.booking.dto;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import ru.practicum.shareit.common.StorageData;
+import ru.practicum.shareit.booking.Booking;
 
 /**
  * TODO Sprint add-bookings.
@@ -11,5 +11,5 @@ import ru.practicum.shareit.common.StorageData;
 @SuperBuilder(toBuilder = true)
 @Data
 @RequiredArgsConstructor
-public class BookingDto extends StorageData {
+public class BookingDto extends Booking {
 }

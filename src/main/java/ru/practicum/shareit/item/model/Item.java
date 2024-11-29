@@ -15,9 +15,9 @@ import ru.practicum.shareit.user.User;
 public class Item extends StorageData {
     @ManyToOne
     @JoinColumn(name = "owner_id")
-    User owner;
+    private User owner;
     private String name;
     private String description;
     @Column(name = "is_available", nullable = false)
-    private boolean isAvailable;
+    private boolean available;
 }
