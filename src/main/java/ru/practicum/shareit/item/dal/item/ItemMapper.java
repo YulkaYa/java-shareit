@@ -37,5 +37,9 @@ public interface ItemMapper {
     ItemDtoFull itemToItemDtoFull(Item item, List<CommentDto> comments, Booking lastBooking, Booking nextBooking);
 
     @Mapping(source = "item.owner.id", target = "ownerId")
+    @Mapping(source = "item.id", target = "id")
+    ItemDtoFull itemToItemDtoFullPartly(Item item);
+
+    @Mapping(source = "item.owner.id", target = "ownerId")
     ItemDtoWithoutDates itemToItemItemDtoWithoutDates (Item item, List<CommentDto> comments);
 }

@@ -26,6 +26,7 @@ import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.dal.UserBaseRepository;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,102 +55,64 @@ public class ItemServiceImpl implements ItemService {
     public <T extends ItemDtoWithoutDates> T getItemById(long userId, long itemId) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new NotFoundException("Товар с id=" + itemId + " не найден"));
-        List<CommentDto> comments = commentMapper.listCommentToListCommentDto(commentDBRepository
-                .findByItemId(itemId));
+        ItemDtoFull itemDtoFull = itemMapper.itemToItemDtoFullPartly(item);
 
-        ItemDtoWithoutDates itemDtoWithoutDates = itemMapper.itemToItemItemDtoWithoutDates(item, comments);
-
-        if (item.getOwner().getId() == userId) {
-            Sort sortByStart = Sort.by(Sort.Direction.ASC, "start");
-            Sort sortByEnd = Sort.by(Sort.Direction.ASC, "end");
-            Booking lastBooking;
-            Booking nextBooking;
-
-            // Находим список бронирований, стартующих до текущей даты, и сортируем по возрастанию даты оконачания брони
-            List<Booking> lastBookings = bookingDBRepository.findByItemIdAndStartIsBefore(userId,
-                    LocalDateTime.now(), sortByEnd);
-            LocalDateTime endOfLastBooking;
-
-            // Если последних броней нет, то последнее бронирование оставляем пустым, а дата старта след. брони = текущая
-            if (lastBookings.isEmpty()) {
-                lastBooking = null;
-                endOfLastBooking = LocalDateTime.now();
-            } else {
-                lastBooking = lastBookings.getLast();
-                endOfLastBooking = lastBooking.getEnd(); // Дата след. брони = дата окончания последней брони
-
-                // Если есть подтвержденное неоконченное бронирование, то берем его, как последнее,
-                // а его дату окончания ждя отсчета следующей брони
-                for (Booking booking: lastBookings) {
-                    if( booking.getStatus().equals(Status.APPROVED) &&
-                            booking.getEnd().isAfter(LocalDateTime.now())) {
-                        endOfLastBooking = booking.getEnd();
-                        lastBooking = booking;
-                        break;
-                    }
-                }
-            }
-
-            List<Booking> nextBookings = bookingDBRepository.findByItemIdAndStartIsAfter(userId,
-                    endOfLastBooking, sortByStart);
-            if (nextBookings.isEmpty()) {
-                nextBooking = null;
-            } else {
-                nextBooking = nextBookings.getFirst();
-            }
-
-            return (T) itemMapper.itemToItemDtoFull(item, comments, lastBooking, nextBooking);
-        } else return (T) itemDtoWithoutDates;
+        addBookingsToItemDtoFull(userId, itemId, itemDtoFull);
+        return (T)itemDtoFull;
     }
 
+    private void addBookingsToItemDtoFull(long userId, long itemId, ItemDtoFull itemDtoFull) {
+        Sort sortByStart = Sort.by(Sort.Direction.ASC, "start");
+        Sort sortByEnd = Sort.by(Sort.Direction.ASC, "end");
+        Booking lastBooking;
+        Booking nextBooking;
+        LocalDateTime now = LocalDateTime.now();
+
+        // Находим список бронирований, стартующих до текущей даты, и сортируем по возрастанию даты оконачания брони
+        List<Booking> lastBookings = bookingDBRepository.findByItemIdAndStartIsBeforeAndEndIsAfter(itemId,
+                now, now, sortByStart);        System.out.println("это lastbookings" + lastBookings);
+        LocalDateTime endOfLastBooking;
+
+        // Если последних броней нет, то последнее бронирование оставляем пустым, а дата старта след. брони = текущая
+        if (lastBookings.isEmpty()) {
+            lastBooking = null;
+            endOfLastBooking = now;
+        } else {
+            lastBooking = lastBookings.getLast();
+            endOfLastBooking = lastBooking.getEnd(); // Дата след. брони = дата окончания последней брони
+
+            // Если есть подтвержденное неоконченное бронирование, то берем его, как последнее,
+            // а его дату окончания ждя отсчета следующей брони
+/*  todo          for (Booking booking: lastBookings) {
+                if( booking.getStatus().equals(Status.APPROVED) &&
+                        booking.getEnd().isAfter(now)) {
+                    endOfLastBooking = booking.getEnd();
+                    lastBooking = booking;
+                    break;
+                }
+            }*/
+        }
+
+        List<Booking> nextBookings = bookingDBRepository.findByItemIdAndStartIsAfter(userId,
+                endOfLastBooking, sortByStart); System.out.println("это nextbookings" + lastBookings); //todo
+        if (nextBookings.isEmpty()) {
+            nextBooking = null;
+        } else {
+            nextBooking = nextBookings.getFirst();
+        }
+
+        itemDtoFull.setLastBooking(bookingMapper.boookingToBookingDto(lastBooking));
+        itemDtoFull.setNextBooking(bookingMapper.boookingToBookingDto(nextBooking));
+        itemDtoFull.setComments(commentMapper.listCommentToListCommentDto(commentDBRepository
+                .findByItemId(itemId)));
+    }
 
     public List<ItemDtoFull> getItemsByUserId(long userId) {
         List<ItemDtoFull> listItemDtoFull = itemMapper.listItemToListItemDtoFull(itemRepository
                 .findByOwnerId(userId));
         for (ItemDtoFull itemDtoFull: listItemDtoFull) {
             long itemId = itemDtoFull.getId();
-
-            Sort sortByStart = Sort.by(Sort.Direction.ASC, "start");
-            Sort sortByEnd = Sort.by(Sort.Direction.ASC, "end");
-            Booking lastBooking;
-            Booking nextBooking;
-
-            // Находим список бронирований, стартующих до текущей даты, и сортируем по возрастанию даты оконачания брони
-            List<Booking> lastBookings = bookingDBRepository.findByItemIdAndStartIsBefore(itemId,
-                    LocalDateTime.now(), sortByEnd);
-            LocalDateTime endOfLastBooking;
-
-            // Если последних броней нет, то последнее бронирование оставляем пустым, а дата старта след. брони = текущая
-            if (lastBookings.isEmpty()) {
-                lastBooking = null;
-                endOfLastBooking = LocalDateTime.now();
-            } else {
-                lastBooking = lastBookings.getLast();
-                endOfLastBooking = lastBooking.getEnd(); // Дата след. брони = дата окончания последней брони
-
-                // Если есть подтвержденное неоконченное бронирование, то берем его, как последнее,
-                // а его дату окончания ждя отсчета следующей брони
-                for (Booking booking: lastBookings) {
-                    if( booking.getStatus().equals(Status.APPROVED) &&
-                            booking.getEnd().isAfter(LocalDateTime.now())) {
-                        endOfLastBooking = booking.getEnd();
-                        lastBooking = booking;
-                        break;
-                    }
-                }
-            }
-            List<Booking> nextBookings = bookingDBRepository.findByItemIdAndStartIsAfter(userId,
-                    endOfLastBooking, sortByStart);
-            if (nextBookings.isEmpty()) {
-                nextBooking = null;
-            } else {
-                nextBooking = nextBookings.getFirst();
-            }
-
-            itemDtoFull.setLastBooking(bookingMapper.boookingToBookingDto(lastBooking));
-            itemDtoFull.setNextBooking(bookingMapper.boookingToBookingDto(nextBooking));
-            itemDtoFull.setComments(commentMapper.listCommentToListCommentDto(commentDBRepository
-                    .findByItemId(itemId)));
+            addBookingsToItemDtoFull(userId, itemId, itemDtoFull);
         }
         return listItemDtoFull;
     }
