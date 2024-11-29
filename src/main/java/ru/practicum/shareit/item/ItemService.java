@@ -10,9 +10,9 @@ import java.util.List;
 public interface ItemService {
     ItemDtoWithoutDates create(long userId, ItemDtoWithoutDates itemDtoWithoutDates);
 
-    ItemDtoFull getItemById(long itemId);
+    <T extends ItemDtoWithoutDates> T getItemById(long userId, long itemId);
 
-    List<ItemDtoWithoutDates> getItemsByUserId(long userId);
+    List<ItemDtoFull> getItemsByUserId(long userId);
 
     ItemDtoWithoutDates update(long userId, long itemId, ItemDtoWithoutDates itemDtoWithoutDates);
 

@@ -20,7 +20,7 @@ import java.util.List;
 @SuperBuilder(toBuilder = true)
 @Data
 @RequiredArgsConstructor
-public class ItemDtoFull extends StorageData {
+public class ItemDtoFull extends ItemDtoWithoutDates {
     @NotNull(groups = Update.class, message = "Id при обновлении не должен быть пустым") //todo убрать update.class так как владелец должен быть всегда указан?
     private long ownerId;
     @NotBlank(groups = Create.class, message = "Название не может быть пустым")

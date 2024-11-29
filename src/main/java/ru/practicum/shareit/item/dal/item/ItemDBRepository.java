@@ -24,6 +24,5 @@ public interface ItemDBRepository extends JpaRepository<Item, Long>, ItemBaseRep
     @Query("select i from Item i " +
             "where (upper(i.name) like upper(concat('%', ?1, '%')) " +
             "or upper(i.description) like upper(concat('%', ?1, '%'))) and i.available = true")
-   // @Query("select it from Item as it  JOIN FETCH it.owner as ow where it.description like %:place% or it.name like %:place%")
     List<Item> findByDescriptionOrName(String searchText);
 }

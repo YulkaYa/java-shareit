@@ -10,6 +10,8 @@ import ru.practicum.shareit.common.Create;
 import ru.practicum.shareit.common.StorageData;
 import ru.practicum.shareit.common.Update;
 
+import java.util.List;
+
 /**
  * TODO Sprint add-controllers.
  */
@@ -28,4 +30,5 @@ public class ItemDtoWithoutDates extends StorageData {
     private String description;
     @NotBlank(groups = Create.class, message = "Доступность не может быть пустой")
     private String available;
+    private List<CommentDto> comments;
 }

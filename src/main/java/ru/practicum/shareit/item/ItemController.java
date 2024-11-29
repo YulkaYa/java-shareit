@@ -41,13 +41,14 @@ public class ItemController {
 
     @GetMapping("/{itemId}")
     @ResponseStatus(HttpStatus.OK)
-    public ItemDtoFull getItemById(@PathVariable(name = "itemId") long itemId) {
-        return itemService.getItemById(itemId);
+    public <T extends ItemDtoWithoutDates> T getItemById(@RequestHeader(X_SHARER_USER_ID) long userId,
+                                                         @PathVariable(name = "itemId") long itemId) {
+        return itemService.getItemById(userId, itemId);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ItemDtoWithoutDates> getItemsByUserId(@RequestHeader(X_SHARER_USER_ID) long userId) {
+    public List<ItemDtoFull> getItemsByUserId(@RequestHeader(X_SHARER_USER_ID) long userId) {
         return itemService.getItemsByUserId(userId);
     }
 
