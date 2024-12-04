@@ -18,20 +18,29 @@ import ru.practicum.shareit.exception.NotFoundException;
 public class ExceptionHandler {
     @org.springframework.web.bind.annotation.ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleNotFoundException(final NotFoundException e) {
-        return new ErrorResponse(e.getMessage());
+    public ResponseEntity<ErrorResponse> handleNotFoundException(final NotFoundException e) {
+        ExceptionHandler.log.error("404 {}", e.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse(e.getMessage()));
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleDuplicatedDataException(final DuplicatedDataException e) {
-        return new ErrorResponse(e.getMessage());
+    public ResponseEntity<ErrorResponse> handleDuplicatedDataException(final DuplicatedDataException e) {
+        ExceptionHandler.log.error("409 {}", e.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(new ErrorResponse(e.getMessage()));
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleConditionsNotMetException(final ConditionsNotMetException e) {
-        return new ErrorResponse(e.getMessage());
+    public ResponseEntity<ErrorResponse> handleConditionsNotMetException(final ConditionsNotMetException e) {
+        ExceptionHandler.log.error("400 {}", e.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(e.getMessage()));
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler
