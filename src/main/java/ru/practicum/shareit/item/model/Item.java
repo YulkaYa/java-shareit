@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.common.StorageData;
+import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.User;
 
 @SuperBuilder(toBuilder = true)
@@ -20,4 +21,7 @@ public class Item extends StorageData {
     private String description;
     @Column(name = "is_available", nullable = false)
     private boolean available;
+    @ManyToOne
+    @JoinColumn(name = "request_id", nullable = true)
+    private ItemRequest request;
 }
