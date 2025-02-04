@@ -21,6 +21,8 @@ import ru.practicum.shareit.item.dto.ItemDtoFull;
 import ru.practicum.shareit.item.dto.ItemDtoWithoutDates;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.request.ItemRequest;
+import ru.practicum.shareit.request.dal.ItemRequestDBRepository;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.dal.UserBaseRepository;
 
@@ -35,6 +37,7 @@ public class ItemServiceImpl implements ItemService {
     private final UserBaseRepository userRepository;
     private final CommentDBRepository commentDBRepository;
     private final BookingDBRepository bookingDBRepository;
+    private final ItemRequestDBRepository itemRequestDBRepository;
     private final ItemMapper itemMapper = Mappers.getMapper(ItemMapper.class);
     private final CommentMapper commentMapper = Mappers.getMapper(CommentMapper.class);
     private final BookingMapper bookingMapper = Mappers.getMapper(BookingMapper.class);
@@ -44,7 +47,15 @@ public class ItemServiceImpl implements ItemService {
         User owner = userRepository.findById(userId).orElseThrow(() ->
                 new NotFoundException("Пользователь с id = " + userId + "не найден"));
         itemDtoWithoutDates.setOwnerId(userId);
-        Item item = itemMapper.toItem(itemDtoWithoutDates, owner);
+        long requestId =  itemDtoWithoutDates.getRequestId();
+        Item item;
+        if(requestId != 0) {
+            ItemRequest itemRequest = itemRequestDBRepository.findById(itemDtoWithoutDates.getRequestId()).orElseThrow(() ->
+            new NotFoundException(" Запрос с id = " + userId + "не найден"));
+            item = itemMapper.toItemWithRequest(itemDtoWithoutDates, owner, itemRequest);
+        } else {
+            item = itemMapper.toItemWithoutRequest(itemDtoWithoutDates, owner);
+        }
         return itemMapper.itemToItemDto(itemRepository.save(item));
     }
 

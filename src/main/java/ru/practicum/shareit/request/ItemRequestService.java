@@ -15,7 +15,9 @@ interface ItemRequestService {
 
     List<ItemRequestDtoWithItems> getItemsRequestsByUserId(long requestorId);
 
-    List<ItemRequestDtoWithItems> getRequestsFromOtherUsers(long requestorId, int from, int size);
+ /*   List<ItemRequestDtoWithItems> getRequestsFromOtherUsers(long requestorId, int from, int size);// todo надо ли*/
 
     List<ItemRequestDtoWithItems> getRequestsFromOtherUsers(long userId);
+
+    ItemRequestDtoWithItems getItemsRequestsByRequestId(long requestId);
 }

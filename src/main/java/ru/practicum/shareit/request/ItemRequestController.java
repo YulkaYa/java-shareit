@@ -46,6 +46,13 @@ public class ItemRequestController {
         return itemRequestBaseDto;
     }
 
+    //GET /requests/{requestId} — получить данные об одном конкретном запросе вместе с данными об ответах на него в том же формате, что и в эндпоинте GET /requests. Посмотреть данные об отдельном запросе может любой пользователь.
+    @GetMapping("/{requestId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ItemRequestDtoWithItems getRequestsByRequestId(@PathVariable(name = "requestId") long requestId) {
+        return itemRequestService.getItemsRequestsByRequestId(requestId);
+    }
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<ItemRequestDtoWithItems> getRequestsByUserId(@RequestHeader(X_SHARER_USER_ID) long userId) {
@@ -58,7 +65,8 @@ public class ItemRequestController {
         List<ItemRequestDtoWithItems> itemRequestDtoWithItems = itemRequestService.getRequestsFromOtherUsers(userId);
         return itemRequestDtoWithItems;
     }
-/*
+
+/*//todo нужно ли доделать пагинацию
     //GET /requests/all — получить список запросов, созданных другими пользователями. С помощью этого эндпоинта пользователи смогут просматривать существующие запросы, на которые они могли бы ответить. Запросы сортируются по дате создания от более новых к более старым.
     @GetMapping("/all")
     public List<ItemRequestDtoWithItems> getRequestsFromOtherUsers(@RequestHeader(X_SHARER_USER_ID) long userId,
@@ -70,10 +78,4 @@ public class ItemRequestController {
 
 */
 
-
-
-
-
-
-//GET /requests/{requestId} — получить данные об одном конкретном запросе вместе с данными об ответах на него в том же формате, что и в эндпоинте GET /requests. Посмотреть данные об отдельном запросе может любой пользователь.
 }

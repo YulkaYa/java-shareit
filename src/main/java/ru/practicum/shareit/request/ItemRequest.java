@@ -29,5 +29,5 @@ public class ItemRequest extends StorageData {
     @Column(name = "created", nullable = false)
     private LocalDateTime created;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "request") //todo проверить, что все ок выгружается
-    private List<Item> items;
+    private List<Item> items = new ArrayList<>();
 }

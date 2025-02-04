@@ -7,6 +7,7 @@ import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDtoFull;
 import ru.practicum.shareit.item.dto.ItemDtoWithoutDates;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.User;
 
 import java.util.List;
@@ -18,7 +19,14 @@ public interface ItemMapper {
     @Mapping(source = "owner", target = "owner")
     @Mapping(source = "itemDtoWithoutDates.id", target = "id")
     @Mapping(source = "itemDtoWithoutDates.name", target = "name")
-    Item toItem(ItemDtoWithoutDates itemDtoWithoutDates, User owner);
+    Item toItemWithoutRequest(ItemDtoWithoutDates itemDtoWithoutDates, User owner);
+
+    @Mapping(source = "owner", target = "owner")
+    @Mapping(source = "itemDtoWithoutDates.id", target = "id")
+    @Mapping(source = "itemDtoWithoutDates.name", target = "name")
+    @Mapping(source = "itemDtoWithoutDates.description", target = "description")
+    @Mapping(source = "request", target = "request")
+    Item toItemWithRequest(ItemDtoWithoutDates itemDtoWithoutDates, User owner, ItemRequest request);
 
     @Mapping(source = "owner.id", target = "ownerId")
     ItemDtoWithoutDates itemToItemDto(Item item);

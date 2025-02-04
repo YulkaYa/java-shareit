@@ -31,6 +31,11 @@ todo */
    todo */
 
     @Mapping(source = "requestor.id", target = "requestorId")
+    @Mapping(source = "items", target = "items")
+    ItemRequestDtoWithItems toItemRequestDtoWithItems(ItemRequest itemRequest);
+
+    @Mapping(source = "requestor.id", target = "requestorId")
+    @Mapping(source = "items", target = "items")
     List<ItemRequestDtoWithItems> toListItemRequestDtoWithItems(List<ItemRequest> listItemRequest);
 
 }
