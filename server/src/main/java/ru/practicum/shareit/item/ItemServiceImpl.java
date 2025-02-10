@@ -49,7 +49,7 @@ public class ItemServiceImpl implements ItemService {
         itemDtoWithoutDates.setOwnerId(userId);
         long requestId =  itemDtoWithoutDates.getRequestId();
         Item item;
-        if(requestId != 0) {
+        if (requestId != 0) {
             ItemRequest itemRequest = itemRequestDBRepository.findById(itemDtoWithoutDates.getRequestId()).orElseThrow(() ->
             new NotFoundException(" Запрос с id = " + userId + "не найден"));
             item = itemMapper.toItemWithRequest(itemDtoWithoutDates, owner, itemRequest);
