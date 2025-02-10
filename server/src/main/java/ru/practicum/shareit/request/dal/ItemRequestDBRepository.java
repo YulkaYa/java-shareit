@@ -4,7 +4,6 @@ package ru.practicum.shareit.request.dal;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.request.ItemRequest;
 
 import java.util.List;

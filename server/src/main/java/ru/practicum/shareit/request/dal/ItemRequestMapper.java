@@ -1,7 +1,9 @@
 package ru.practicum.shareit.request.dal;
 
-import org.mapstruct.*;
-import org.mapstruct.factory.Mappers;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.request.dto.ItemRequestBaseDto;
 import ru.practicum.shareit.request.dto.ItemRequestCreatedDto;

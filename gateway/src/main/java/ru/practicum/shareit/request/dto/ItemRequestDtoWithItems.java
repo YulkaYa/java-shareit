@@ -2,14 +2,11 @@ package ru.practicum.shareit.request.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.common.Create;
 import ru.practicum.shareit.common.StorageData;
-import ru.practicum.shareit.item.dto.ItemDtoFull;
 import ru.practicum.shareit.item.dto.ItemDtoWithoutDates;
 
 import java.time.LocalDateTime;

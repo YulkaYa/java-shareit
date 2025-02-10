@@ -1,12 +1,9 @@
 package ru.practicum.shareit.request;
 
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import ru.practicum.shareit.booking.Status;
 import ru.practicum.shareit.common.StorageData;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;

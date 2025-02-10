@@ -1,18 +1,14 @@
 package ru.practicum.shareit.request.dto;
 
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.common.Create;
 import ru.practicum.shareit.common.StorageData;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * TODO Sprint add-item-requests.

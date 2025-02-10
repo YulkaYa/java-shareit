@@ -2,16 +2,12 @@ package ru.practicum.shareit.item.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.common.Create;
 import ru.practicum.shareit.common.StorageData;
-import ru.practicum.shareit.common.Update;
-
-import java.util.List;
 
 /**
  * TODO Sprint add-controllers.
