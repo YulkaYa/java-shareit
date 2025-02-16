@@ -4,12 +4,8 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.common.StorageData;
-
 import java.time.LocalDateTime;
 
-/**
- * TODO Sprint add-item-requests.
- */
 @SuperBuilder(toBuilder = true)
 @Data
 @RequiredArgsConstructor

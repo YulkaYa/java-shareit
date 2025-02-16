@@ -47,15 +47,6 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         return itemRequestDtoWithItems;
     }
 
-/*     todo надо ли @Override
-    public List<ItemRequestDtoWithItems> getRequestsFromOtherUsers(long requestorId, int from, int size) {
-        Sort sort = Sort.by(Sort.Direction.DESC, "created");
-            PageRequest page = PageRequest.of(from > 0 ? from / size : 0, size, sort);
-        List<ItemRequest> itemRequests = itemRequestDBRepository.findAllByRequestorIdNot(requestorId, page); //todo https://practicum.yandex.ru/trainer/java-developer/lesson/6fc4672d-2f83-47c9-a2bd-2e0babb444db/?searchedText=PageRequest , https://github.com/praktikum-java/module-4-later-spring-only/blob/5_spring_data_repositories/src/main/java/ru/practicum/note/ItemNoteServiceImpl.java
-        List<ItemRequestDtoWithItems> itemRequestDtoWithItems = itemRequestMapper.toListItemRequestDtoWithItems(itemRequests);
-        return itemRequestDtoWithItems;
-    }*/
-
     @Override
     public List<ItemRequestDtoWithItems> getRequestsFromOtherUsers(long requestorId) {
         Sort sort = Sort.by(Sort.Direction.DESC, "created");

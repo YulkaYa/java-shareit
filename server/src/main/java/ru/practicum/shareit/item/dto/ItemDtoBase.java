@@ -9,10 +9,6 @@ import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.common.Create;
 import ru.practicum.shareit.common.StorageData;
 
-/**
- * TODO Sprint add-controllers.
- */
-
 @SuperBuilder(toBuilder = true)
 @Data
 @RequiredArgsConstructor

@@ -7,17 +7,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.common.Create;
 import ru.practicum.shareit.common.StorageData;
-
 import java.time.LocalDateTime;
 
-/**
- * TODO Sprint add-item-requests.
- */
 @SuperBuilder(toBuilder = true)
 @Data
 @RequiredArgsConstructor
 
-// todo пробую без extends StorageData  public class ItemRequestCreatedDto extends StorageData {
 public class ItemRequestCreatedDto extends StorageData {
     @NotBlank(groups = Create.class, message = "Описание не может быть пустым")
     @Pattern(regexp = ".*\\S+.*", message = "Описание не может состоять из пробелов или быть пустым")

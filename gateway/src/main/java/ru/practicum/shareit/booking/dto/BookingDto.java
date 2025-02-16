@@ -14,9 +14,6 @@ import ru.practicum.shareit.user.dto.UserDto;
 
 import java.time.LocalDateTime;
 
-/**
- * TODO Sprint add-bookings.
- */
 @SuperBuilder(toBuilder = true)
 @Data
 @RequiredArgsConstructor

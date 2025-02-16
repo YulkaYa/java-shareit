@@ -7,12 +7,8 @@ import ru.practicum.shareit.booking.Status;
 import ru.practicum.shareit.common.StorageData;
 import ru.practicum.shareit.item.dto.ItemDtoBase;
 import ru.practicum.shareit.user.dto.UserDto;
-
 import java.time.LocalDateTime;
 
-/**
- * TODO Sprint add-bookings.
- */
 @SuperBuilder(toBuilder = true)
 @Data
 @RequiredArgsConstructor

@@ -13,12 +13,8 @@ import ru.practicum.shareit.booking.dto.BookingDtoCreated;
 import ru.practicum.shareit.common.Create;
 import ru.practicum.shareit.common.Update;
 import ru.practicum.shareit.exception.NotFoundException;
-
 import java.util.List;
 
-/**
- * TODO Sprint add-bookings.
- */
 @RestController
 @Slf4j
 @Validated

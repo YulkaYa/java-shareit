@@ -11,9 +11,6 @@ import ru.practicum.shareit.common.Create;
 import ru.practicum.shareit.common.Update;
 import ru.practicum.shareit.user.dto.UserDto;
 
-/**
- * TODO Sprint add-controllers.
- */
 @RestController
 @RequestMapping(path = "/users")
 @Slf4j
@@ -52,5 +49,4 @@ public class UserController {
         UserController.log.info("Удаляем пользователя с id={}", userId);
         this.userService.delete(userId);
     }
-
 }

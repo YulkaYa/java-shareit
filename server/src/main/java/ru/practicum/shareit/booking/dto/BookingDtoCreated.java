@@ -5,12 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.booking.Status;
 import ru.practicum.shareit.common.StorageData;
-
 import java.time.LocalDateTime;
 
-/**
- * TODO Sprint add-bookings.
- */
 @SuperBuilder(toBuilder = true)
 @Data
 @RequiredArgsConstructor
@@ -18,5 +14,5 @@ public class BookingDtoCreated extends StorageData {
     private long itemId;
     private LocalDateTime start;
     private LocalDateTime end;
-    private Status status = Status.WAITING;
+    private final Status status = Status.WAITING;
 }

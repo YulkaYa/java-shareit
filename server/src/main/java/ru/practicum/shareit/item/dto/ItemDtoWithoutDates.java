@@ -2,16 +2,13 @@ package ru.practicum.shareit.item.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.common.StorageData;
-
 import java.util.List;
 
-/**
- * TODO Sprint add-controllers.
- */
-
+@EqualsAndHashCode(callSuper = true)
 @SuperBuilder(toBuilder = true)
 @Data
 @RequiredArgsConstructor

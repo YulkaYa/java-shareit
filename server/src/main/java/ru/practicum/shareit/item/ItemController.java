@@ -13,13 +13,9 @@ import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.CommentDtoCreatedText;
 import ru.practicum.shareit.item.dto.ItemDtoFull;
 import ru.practicum.shareit.item.dto.ItemDtoWithoutDates;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * TODO Sprint add-controllers.
- */
 @RestController
 @Slf4j
 @Validated

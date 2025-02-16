@@ -10,9 +10,6 @@ import ru.practicum.shareit.common.StorageData;
 
 import java.time.LocalDateTime;
 
-/**
- * TODO Sprint add-bookings.
- */
 @SuperBuilder(toBuilder = true)
 @Data
 @RequiredArgsConstructor

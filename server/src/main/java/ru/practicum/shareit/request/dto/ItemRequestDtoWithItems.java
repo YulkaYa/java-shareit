@@ -5,13 +5,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.common.StorageData;
 import ru.practicum.shareit.item.dto.ItemDtoWithoutDates;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * TODO Sprint add-item-requests.
- */
 @SuperBuilder(toBuilder = true)
 @Data
 @RequiredArgsConstructor

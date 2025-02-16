@@ -42,17 +42,4 @@ public class ItemRequestController {
     public ResponseEntity<Object> getRequestsFromOtherUsers(@RequestHeader(X_SHARER_USER_ID) long userId) { // todo проверить проверяется ли в optional значение на positive/negative/zero
         return itemRequestClient.getRequestsFromOtherUsers(userId);
     }
-
-/*//todo нужно ли доделать пагинацию
-    //GET /requests/all — получить список запросов, созданных другими пользователями. С помощью этого эндпоинта пользователи смогут просматривать существующие запросы, на которые они могли бы ответить. Запросы сортируются по дате создания от более новых к более старым.
-    @GetMapping("/all")
-    public List<ItemRequestDtoWithItems> getRequestsFromOtherUsers(@RequestHeader(X_SHARER_USER_ID) long userId,
-                          @RequestParam (defaultValue = "0") @PositiveOrZero(message = "Параметр from не должен быть отрицательным") final int from,
-                          @RequestParam @Positive(message = "Параметр count должен быть больше нуля") final int size) { // todo проверить проверяется ли в optional значение на positive/negative/zero
-        List<ItemRequestDtoWithItems> itemRequestDtoWithItems = itemRequestService.getRequestsFromOtherUsers(userId, from, size);
-        return itemRequestDtoWithItems;
-    }
-
-*/
-
 }

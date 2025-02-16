@@ -19,18 +19,8 @@ public interface ItemRequestMapper {
     @Mapping(target = "id", ignore = true)
     ItemRequest toItemRequest(ItemRequestCreatedDto itemRequestCreatedDto, User requestor);
 
-/*
-    @Mapping(source = "requestor.id", target = "requestorId")
-    <T extends ItemRequestBaseDto> T itemRequestToItemRequestDto(ItemRequest itemRequest);
-todo */
-
     @Mapping(source = "requestor.id", target = "requestorId")
     ItemRequestBaseDto toItemRequestBaseDto(ItemRequest itemRequest);
-
-
-
-/*    <T extends ItemRequestBaseDto> List<ItemRequestDtoWithItems> listItemRequestToListItemRequestDto(List<ItemRequest> listItemRequest);
-   todo */
 
     @Mapping(source = "requestor.id", target = "requestorId")
     @Mapping(source = "items", target = "items")

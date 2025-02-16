@@ -13,9 +13,6 @@ import ru.practicum.shareit.common.Update;
 
 import java.util.List;
 
-/**
- * TODO Sprint add-controllers.
- */
 
 @SuperBuilder(toBuilder = true)
 @Data

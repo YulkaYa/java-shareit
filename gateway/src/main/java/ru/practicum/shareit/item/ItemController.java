@@ -12,9 +12,6 @@ import ru.practicum.shareit.common.Update;
 import ru.practicum.shareit.item.dto.CommentDtoCreatedText;
 import ru.practicum.shareit.item.dto.ItemDtoWithoutDates;
 
-/**
- * TODO Sprint add-controllers.
- */
 @Controller
 @RequiredArgsConstructor
 @Slf4j

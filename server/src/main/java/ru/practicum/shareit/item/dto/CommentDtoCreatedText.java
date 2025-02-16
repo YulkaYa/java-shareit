@@ -11,6 +11,6 @@ import java.time.LocalDateTime;
 @Data
 @RequiredArgsConstructor
 public class CommentDtoCreatedText extends StorageData {
-    private LocalDateTime created = LocalDateTime.now();
+    private final LocalDateTime created = LocalDateTime.now();
     private String text;
 }
