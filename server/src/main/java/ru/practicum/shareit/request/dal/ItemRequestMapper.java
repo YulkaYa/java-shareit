@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.NullValuePropertyMappingStrategy;
+import ru.practicum.shareit.item.dto.ItemDtoWithoutDates;
 import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.request.dto.ItemRequestBaseDto;
 import ru.practicum.shareit.request.dto.ItemRequestCreatedDto;
@@ -22,12 +23,7 @@ public interface ItemRequestMapper {
     @Mapping(source = "requestor.id", target = "requestorId")
     ItemRequestBaseDto toItemRequestBaseDto(ItemRequest itemRequest);
 
-    @Mapping(source = "requestor.id", target = "requestorId")
+    @Mapping(source = "itemRequest.requestor.id", target = "requestorId")
     @Mapping(source = "items", target = "items")
-    ItemRequestDtoWithItems toItemRequestDtoWithItems(ItemRequest itemRequest);
-
-    @Mapping(source = "requestor.id", target = "requestorId")
-    @Mapping(source = "items", target = "items")
-    List<ItemRequestDtoWithItems> toListItemRequestDtoWithItems(List<ItemRequest> listItemRequest);
-
+    ItemRequestDtoWithItems toItemRequestDtoWithItems(ItemRequest itemRequest, List<ItemDtoWithoutDates> items);
 }

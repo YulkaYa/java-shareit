@@ -125,7 +125,7 @@ class ItemControllerTest {
 
     @SneakyThrows
     @Test
-    void update() {
+    void updateTest() {
 
         when(itemService.update(userId, itemId, itemDtoWithoutDates2)).thenReturn(itemDtoWithoutDates3);
 
@@ -145,7 +145,7 @@ class ItemControllerTest {
 
     @SneakyThrows
     @Test
-    void searchItemsByText() {
+    void searchItemsByText_positive() {
         String text = "dsfd";
         when(itemService.searchItemsByText(text)).thenReturn(List.of(itemDtoWithoutDates, itemDtoWithoutDates2));
 
@@ -159,6 +159,23 @@ class ItemControllerTest {
 
         verify(itemService, times(1)).searchItemsByText(any(String.class));
         assertEquals(objectMapper.writeValueAsString(List.of(itemDtoWithoutDates, itemDtoWithoutDates2)), result);
+    }
+
+    @SneakyThrows
+    @Test
+    void searchItemsByText_text_isBlank() {
+        String text = " ";
+
+        String result = mockMvc.perform(get("/items/search")
+                        .param("text", text)
+                        .header("X-Sharer-User-Id", userId))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        verify(itemService, times(0)).searchItemsByText(any(String.class));
+        assertEquals(objectMapper.writeValueAsString(new ArrayList<>()), result);
     }
 
     @SneakyThrows

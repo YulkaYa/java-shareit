@@ -2,16 +2,14 @@ package ru.practicum.shareit.request;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import ru.practicum.shareit.common.StorageData;
-import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
-
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @SuperBuilder(toBuilder = true)
 @Data
 @Entity
@@ -25,6 +23,4 @@ public class ItemRequest extends StorageData {
     private String description;
     @Column(name = "created", nullable = false)
     private LocalDateTime created;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "request") //todo проверить, что все ок выгружается
-    private List<Item> items = new ArrayList<>();
 }

@@ -19,6 +19,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RequestMapping(path = "/requests")
+@Transactional
 public class ItemRequestController {
     // POST /requests — добавить новый запрос вещи.
     // Основная часть запроса — текст запроса, в котором пользователь описывает, какая именно вещь ему нужна.
@@ -36,21 +37,23 @@ public class ItemRequestController {
         return itemRequestBaseDto;
     }
 
+    //todo добавить выгрузку items
     @GetMapping("/{requestId}")
     @ResponseStatus(HttpStatus.OK)
     public ItemRequestDtoWithItems getRequestsByRequestId(@PathVariable(name = "requestId") long requestId) {
         return itemRequestService.getItemsRequestsByRequestId(requestId);
     }
 
+    //todo добавить выгрузку items
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<ItemRequestDtoWithItems> getRequestsByUserId(@RequestHeader(X_SHARER_USER_ID) long userId) {
         return itemRequestService.getItemsRequestsByUserId(userId);
     }
 
+    //todo добавить выгрузку items
     @GetMapping("/all")
     public List<ItemRequestDtoWithItems> getRequestsFromOtherUsers(@RequestHeader(X_SHARER_USER_ID) long userId) { // todo проверить проверяется ли в optional значение на positive/negative/zero
-        List<ItemRequestDtoWithItems> itemRequestDtoWithItems = itemRequestService.getRequestsFromOtherUsers(userId);
-        return itemRequestDtoWithItems;
+        return itemRequestService.getRequestsFromOtherUsers(userId);
     }
 }

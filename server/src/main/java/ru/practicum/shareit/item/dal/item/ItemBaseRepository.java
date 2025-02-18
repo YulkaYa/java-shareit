@@ -19,4 +19,6 @@ public interface ItemBaseRepository {
     List<Item> findByOwnerId(long ownerId);
 
     List<Item> findByDescriptionOrName(String text);
+
+    List<Item> findByRequestId(long requestId);
 }

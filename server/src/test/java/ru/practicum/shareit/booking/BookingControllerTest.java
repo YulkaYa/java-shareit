@@ -12,10 +12,13 @@ import ru.practicum.shareit.booking.dto.BookingDtoCreated;
 import ru.practicum.shareit.item.dto.ItemDtoBase;
 import ru.practicum.shareit.user.dto.UserDto;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -129,7 +132,7 @@ class BookingControllerTest {
 
     @SneakyThrows
     @Test
-    void getAllByOwner() {
+    void getAllByOwner_positive() {
         BookingState bookingState = BookingState.CURRENT;
 
         when(bookingService.getAllByOwner(anyLong(), any())).thenReturn(List.of(bookingDto));
@@ -145,4 +148,23 @@ class BookingControllerTest {
         verify(bookingService, times(1)).getAllByOwner(any(Long.class), any(BookingState.class));
         assertEquals(objectMapper.writeValueAsString(List.of(bookingDto)), result);
     }
+
+    @SneakyThrows
+    @Test
+    void getAllByOwner_negative() {
+        BookingState bookingState = BookingState.CURRENT;
+
+        when(bookingService.getAllByOwner(anyLong(), any())).thenReturn(new ArrayList<>());
+
+        String result = mockMvc.perform(get("/bookings/owner")
+                        .param("state", bookingState.toString())
+                        .header("X-Sharer-User-Id", userId))
+                .andExpect(status().isNotFound())
+                .andReturn()
+                .getResponse()
+                .getContentAsString(StandardCharsets.UTF_8);
+
+        verify(bookingService, times(1)).getAllByOwner(any(Long.class), any(BookingState.class));
+        assertTrue(result.contains("Бронь для пользователя с id = " + userId + " не найдена"));
+       }
 }

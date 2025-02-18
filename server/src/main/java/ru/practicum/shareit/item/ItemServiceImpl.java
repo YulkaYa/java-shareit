@@ -126,7 +126,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDtoWithoutDates> searchItemsByText(String text) {
-        return itemMapper.listItemToListItemDto(itemRepository.findByDescriptionOrName(text));
+        return itemMapper.listItemToListItemDtoWithoutDates(itemRepository.findByDescriptionOrName(text));
     }
 
     @Override
@@ -143,5 +143,9 @@ public class ItemServiceImpl implements ItemService {
         Comment comment = (commentMapper.commentDtoOnlyTextToComment(commentDtoOnlyText, item, author));
         comment = commentDBRepository.save(comment);
         return commentMapper.commentToCommentDto(comment);
+    }
+
+    public List<ItemDtoWithoutDates> getItemsByRequestId(long requestId) {
+        return itemMapper.listItemToListItemDtoWithoutDates(itemRepository.findByRequestId(requestId));
     }
 }

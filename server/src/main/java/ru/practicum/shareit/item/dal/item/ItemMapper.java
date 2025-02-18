@@ -29,13 +29,14 @@ public interface ItemMapper {
     Item toItemWithRequest(ItemDtoWithoutDates itemDtoWithoutDates, User owner, ItemRequest request);
 
     @Mapping(source = "owner.id", target = "ownerId")
+    @Mapping(source = "request.id", target = "requestId")
     ItemDtoWithoutDates itemToItemDto(Item item);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "owner", ignore = true)
     Item updateFromDto(ItemDtoWithoutDates itemDtoWithoutDates, @MappingTarget Item item);
 
-    List<ItemDtoWithoutDates> listItemToListItemDto(List<Item> listItems);
+    List<ItemDtoWithoutDates> listItemToListItemDtoWithoutDates(List<Item> listItems);
 
     List<ItemDtoFull> listItemToListItemDtoFull(List<Item> listItems);
 
