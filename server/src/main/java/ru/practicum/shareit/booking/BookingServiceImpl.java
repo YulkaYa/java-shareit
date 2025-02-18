@@ -45,8 +45,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingDto approve(long userId, long bookingId, boolean approved) {
-        Booking booking = bookingDBRepository.findById(bookingId)
-                .orElseThrow(() -> new NotFoundException("Бронирование с id=" + bookingId + " не найдено"));
+        Booking booking = getBooking(bookingId);
         if (booking.getItem().getOwner().getId() != userId) {
             throw new ConditionsNotMetException("Id владельца и id пользователя в запросе не совпадают");
         } else booking.setStatusByIsApproved(approved);
@@ -55,12 +54,12 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingDto get(long userId, long bookingId) {
-        Booking booking = bookingDBRepository.findById(bookingId)
-                .orElseThrow(() -> new NotFoundException("Бронирование с id=" + bookingId + " не найдено"));
+        Booking booking = getBooking(bookingId);
         if ((booking.getBooker().getId() != userId) && (booking.getItem().getOwner().getId() != userId)) {
             throw new ConditionsNotMetException("Id владельца/арендатора и id пользователя в запросе не совпадают");
         } else return bookingMapper.boookingToBookingDto(booking);
     }
+
 
     @Override
     public List<BookingDto> getAllByUser(long userId, BookingState bookingState) {
@@ -140,5 +139,10 @@ public class BookingServiceImpl implements BookingService {
             }
         }
         return bookingMapper.listBookingToListBookingDto(bookingList);
+    }
+
+    private Booking getBooking(long bookingId) {
+        return bookingDBRepository.findById(bookingId)
+                .orElseThrow(() -> new NotFoundException("Бронирование с id=" + bookingId + " не найдено"));
     }
 }

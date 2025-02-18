@@ -16,9 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 class UserServiceImplTest {
 
-    @Autowired
     private final UserServiceImpl userService;
-    @Autowired
     private final UserDBRepository userDBRepository;
 
     private final UserDto userDto = UserDto.builder()
