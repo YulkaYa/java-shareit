@@ -36,8 +36,7 @@ public class UserServiceImpl implements UserService {
                 throw new DuplicatedDataException("Данный имейл уже используется");
             }
         }
-        User userToUpdate = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("Пользователь с таким id не найден"));
+        User userToUpdate = getUserOrThrow(userId);
         userToUpdate = userMapper.updateFromDto(userDto, userToUpdate);
         return userMapper.userToUserDto(userRepository.update(userToUpdate));
     }
@@ -45,15 +44,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(long id) {
-        User userToDelete = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Пользователь с таким id не найден"));
+        User userToDelete = getUserOrThrow(id);
         userRepository.delete(userToDelete);
     }
 
     @Override
     @Transactional(readOnly = true)
     public UserDto get(long id) {
-        return userMapper.userToUserDto(userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Пользователь с id=" + id + " не найден")));
+        return userMapper.userToUserDto(getUserOrThrow(id));
+    }
+
+    private User getUserOrThrow(long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Пользователь с id=" + id + " не найден"));
     }
 }

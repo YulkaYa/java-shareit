@@ -1,7 +1,6 @@
 package ru.practicum.shareit.item.dal.item;
 
 import org.mapstruct.*;
-import org.mapstruct.factory.Mappers;
 import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDtoFull;
@@ -14,8 +13,6 @@ import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface ItemMapper {
-    ItemMapper INSTANCE = Mappers.getMapper(ItemMapper.class);
-
     @Mapping(source = "owner", target = "owner")
     @Mapping(source = "itemDtoWithoutDates.id", target = "id")
     @Mapping(source = "itemDtoWithoutDates.name", target = "name")
