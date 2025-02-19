@@ -11,7 +11,7 @@ import java.util.List;
 @SuperBuilder(toBuilder = true)
 @Data
 @RequiredArgsConstructor
-public class ItemRequestDtoWithItems extends StorageData { // todo разобраться с валидациями
+public class ItemRequestDtoWithItems extends StorageData {
     private String description;
     private LocalDateTime created;
     private long requestorId;

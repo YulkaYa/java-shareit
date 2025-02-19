@@ -39,7 +39,7 @@ public class ItemRequestController {
 
 
     @GetMapping("/all")
-    public ResponseEntity<Object> getRequestsFromOtherUsers(@RequestHeader(X_SHARER_USER_ID) long userId) { // todo проверить проверяется ли в optional значение на positive/negative/zero
+    public ResponseEntity<Object> getRequestsFromOtherUsers(@RequestHeader(X_SHARER_USER_ID) long userId) {
         return itemRequestClient.getRequestsFromOtherUsers(userId);
     }
 }

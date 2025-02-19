@@ -37,23 +37,20 @@ public class ItemRequestController {
         return itemRequestBaseDto;
     }
 
-    //todo добавить выгрузку items
     @GetMapping("/{requestId}")
     @ResponseStatus(HttpStatus.OK)
     public ItemRequestDtoWithItems getRequestsByRequestId(@PathVariable(name = "requestId") long requestId) {
         return itemRequestService.getItemsRequestsByRequestId(requestId);
     }
 
-    //todo добавить выгрузку items
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<ItemRequestDtoWithItems> getRequestsByUserId(@RequestHeader(X_SHARER_USER_ID) long userId) {
         return itemRequestService.getItemsRequestsByUserId(userId);
     }
 
-    //todo добавить выгрузку items
     @GetMapping("/all")
-    public List<ItemRequestDtoWithItems> getRequestsFromOtherUsers(@RequestHeader(X_SHARER_USER_ID) long userId) { // todo проверить проверяется ли в optional значение на positive/negative/zero
+    public List<ItemRequestDtoWithItems> getRequestsFromOtherUsers(@RequestHeader(X_SHARER_USER_ID) long userId) {
         return itemRequestService.getRequestsFromOtherUsers(userId);
     }
 }

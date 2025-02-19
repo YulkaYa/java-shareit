@@ -14,7 +14,7 @@ import java.util.List;
 @SuperBuilder(toBuilder = true)
 @Data
 @RequiredArgsConstructor
-public class ItemRequestDtoWithItems extends StorageData { // todo разобраться с валидациями
+public class ItemRequestDtoWithItems extends StorageData {
     @NotBlank(groups = Create.class, message = "Описание не может быть пустым")
     @Pattern(regexp = ".*\\S+.*", message = "Описание не может состоять из пробелов или быть пустым")
     private String description;

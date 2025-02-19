@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @SuperBuilder(toBuilder = true)
 @Data
 @RequiredArgsConstructor
-public class ItemRequestBaseDto extends StorageData { // todo разобраться с валидациями
+public class ItemRequestBaseDto extends StorageData {
     @NotBlank(groups = Create.class, message = "Описание не может быть пустым")
     @Pattern(regexp = ".*\\S+.*", message = "Описание не может состоять из пробелов или быть пустым")
     private String description;

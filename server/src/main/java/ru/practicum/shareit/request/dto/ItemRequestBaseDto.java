@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @SuperBuilder(toBuilder = true)
 @Data
 @RequiredArgsConstructor
-public class ItemRequestBaseDto extends StorageData { // todo разобраться с валидациями
+public class ItemRequestBaseDto extends StorageData {
     private String description;
     private LocalDateTime created;
     private long requestorId;

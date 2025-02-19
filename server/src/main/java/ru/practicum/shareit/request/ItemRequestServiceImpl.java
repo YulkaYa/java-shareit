@@ -50,7 +50,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     @Override
     public List<ItemRequestDtoWithItems> getRequestsFromOtherUsers(long requestorId) {
         Sort sort = Sort.by(Sort.Direction.DESC, "created");
-        List<ItemRequest> itemRequests = itemRequestDBRepository.findAllByRequestorIdNot(requestorId, sort); //todo https://practicum.yandex.ru/trainer/java-developer/lesson/6fc4672d-2f83-47c9-a2bd-2e0babb444db/?searchedText=PageRequest , https://github.com/praktikum-java/module-4-later-spring-only/blob/5_spring_data_repositories/src/main/java/ru/practicum/note/ItemNoteServiceImpl.java
+        List<ItemRequest> itemRequests = itemRequestDBRepository.findAllByRequestorIdNot(requestorId, sort);
         return getItemsByRequest(itemRequests);
     }
 
@@ -61,10 +61,12 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         return itemRequestMapper.toItemRequestDtoWithItems(itemRequest, getItemsByRequestId(requestId));
     }
 
+    // вспомогательный метод для получения списка предметов, найденных по id запроса
     private List<ItemDtoWithoutDates> getItemsByRequestId(long requestId) {
             return itemMapper.listItemToListItemDtoWithoutDates(itemBaseRepository.findByRequestId(requestId));
     }
 
+    // вспомогательный метод для получения списка запросов с товарами к ним, найденных по списку запросов
     private List<ItemRequestDtoWithItems> getItemsByRequest(List<ItemRequest> itemRequests) {
         List<ItemRequestDtoWithItems> listItemRequestDtoWithItems = new ArrayList<>();
         for (ItemRequest itemRequest:itemRequests) {
