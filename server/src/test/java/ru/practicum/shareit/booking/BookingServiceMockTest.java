@@ -68,7 +68,7 @@ class BookingServiceMockTest {
     @Test
     void getAllByUserTest_StateCurrent() {
 
-        when(bookingDBRepository.findByBookerIdAndStartIsBeforeAndEndIsAfterAndStatusNotRejectedAndStatusNotCanceledIgnoreCase(anyLong(), any(LocalDateTime.class),
+        when(bookingDBRepository.findByBookerIdAndStartIsBeforeAndEndIsAfter(anyLong(), any(LocalDateTime.class),
                 any(LocalDateTime.class), any(Sort.class))).thenReturn(List.of(booking));
 
         List<BookingDto> bookingDtos = bookingService.getAllByUser(1L, BookingState.CURRENT);
@@ -98,7 +98,7 @@ class BookingServiceMockTest {
     @Test
     void getAllByUserTest_StateFuture() {
 
-        when(bookingDBRepository.findByBookerIdAndStartIsAfterAndStatusNotRejectedAndStatusNotCanceledIgnoreCase(anyLong(), any(LocalDateTime.class), any(Sort.class))).thenReturn(List.of(booking));
+        when(bookingDBRepository.findByBookerIdAndStartIsAfter(anyLong(), any(LocalDateTime.class), any(Sort.class))).thenReturn(List.of(booking));
 
         List<BookingDto> bookingDtos = bookingService.getAllByUser(1L, BookingState.FUTURE);
         BookingDto bookingDto = bookingDtos.get(0);
@@ -155,7 +155,7 @@ class BookingServiceMockTest {
     @Test
     void getAllByOwnerTest_StateCurrent() {
 
-        when(bookingDBRepository.findByItemOwnerIdAndStartIsBeforeAndEndIsAfterAndStatusNotRejectedAndStatusNotCanceledIgnoreCase(anyLong(), any(LocalDateTime.class),
+        when(bookingDBRepository.findByItemOwnerIdAndStartIsBeforeAndEndIsAfter(anyLong(), any(LocalDateTime.class),
                 any(LocalDateTime.class), any(Sort.class))).thenReturn(List.of(booking));
 
         List<BookingDto> bookingDtos = bookingService.getAllByOwner(1L, BookingState.CURRENT);
@@ -185,7 +185,7 @@ class BookingServiceMockTest {
     @Test
     void getAllByOwnerTest_StateFuture() {
 
-        when(bookingDBRepository.findByItemOwnerIdAndStartIsAfterAndStatusNotRejectedAndStatusNotCanceledIgnoreCase(anyLong(), any(LocalDateTime.class), any(Sort.class))).thenReturn(List.of(booking));
+        when(bookingDBRepository.findByItemOwnerIdAndStartIsAfter(anyLong(), any(LocalDateTime.class), any(Sort.class))).thenReturn(List.of(booking));
 
         List<BookingDto> bookingDtos = bookingService.getAllByOwner(1L, BookingState.FUTURE);
         BookingDto bookingDto = bookingDtos.get(0);

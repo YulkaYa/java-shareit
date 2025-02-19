@@ -11,21 +11,21 @@ import java.util.List;
 public interface BookingDBRepository extends JpaRepository<Booking, Long> {
     List<Booking> findByBookerId(Long bookerId, Sort sort);
 
-    List<Booking> findByBookerIdAndStartIsBeforeAndEndIsAfterAndStatusNotRejectedAndStatusNotCanceledIgnoreCase(Long bookerId, LocalDateTime date, LocalDateTime date1, Sort sort);
+    List<Booking> findByBookerIdAndStartIsBeforeAndEndIsAfter(Long bookerId, LocalDateTime date, LocalDateTime date1, Sort sort);
 
     List<Booking> findByBookerIdAndEndIsBefore(Long bookerId, LocalDateTime date, Sort sort);
 
-    List<Booking> findByBookerIdAndStartIsAfterAndStatusNotRejectedAndStatusNotCanceledIgnoreCase(Long bookerId, LocalDateTime date, Sort sort);
+    List<Booking> findByBookerIdAndStartIsAfter(Long bookerId, LocalDateTime date, Sort sort);
 
     List<Booking> findByBookerIdAndStatus(Long bookerId, Status status, Sort sort);
 
     List<Booking> findByItemOwnerId(Long ownerId, Sort sort);
 
-    List<Booking> findByItemOwnerIdAndStartIsBeforeAndEndIsAfterAndStatusNotRejectedAndStatusNotCanceledIgnoreCase(long ownerId, LocalDateTime date, LocalDateTime date1, Sort sort);
+    List<Booking> findByItemOwnerIdAndStartIsBeforeAndEndIsAfter(long ownerId, LocalDateTime date, LocalDateTime date1, Sort sort);
 
     List<Booking> findByItemOwnerIdAndEndIsBefore(long ownerId, LocalDateTime date, Sort sort);
 
-    List<Booking> findByItemOwnerIdAndStartIsAfterAndStatusNotRejectedAndStatusNotCanceledIgnoreCase(long ownerId, LocalDateTime date, Sort sort);
+    List<Booking> findByItemOwnerIdAndStartIsAfter(long ownerId, LocalDateTime date, Sort sort);
 
     List<Booking> findByItemOwnerIdAndStatus(long ownerId, Status status, Sort sort);
 
@@ -38,3 +38,4 @@ public interface BookingDBRepository extends JpaRepository<Booking, Long> {
 
     List<Booking> findByItemIdAndStartIsBeforeAndEndIsAfter(long itemId, LocalDateTime date, LocalDateTime date1, Sort sort);
 }
+

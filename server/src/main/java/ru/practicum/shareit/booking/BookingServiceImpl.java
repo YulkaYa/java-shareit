@@ -73,7 +73,7 @@ public class BookingServiceImpl implements BookingService {
             }
             case CURRENT -> {
                 bookingList = bookingDBRepository
-                        .findByBookerIdAndStartIsBeforeAndEndIsAfterAndStatusNotRejectedAndStatusNotCanceledIgnoreCase(userId, dateTimeNow,
+                        .findByBookerIdAndStartIsBeforeAndEndIsAfter(userId, dateTimeNow,
                                 dateTimeNow, sort);
                 break;
             }
@@ -84,7 +84,7 @@ public class BookingServiceImpl implements BookingService {
             }
             case FUTURE -> {
                 bookingList = bookingDBRepository
-                        .findByBookerIdAndStartIsAfterAndStatusNotRejectedAndStatusNotCanceledIgnoreCase(userId, dateTimeNow, sort);
+                        .findByBookerIdAndStartIsAfter(userId, dateTimeNow, sort);
                 break;
             }
             case WAITING -> {
@@ -113,7 +113,7 @@ public class BookingServiceImpl implements BookingService {
             }
             case CURRENT -> {
                 bookingList = bookingDBRepository
-                        .findByItemOwnerIdAndStartIsBeforeAndEndIsAfterAndStatusNotRejectedAndStatusNotCanceledIgnoreCase(userId, dateTimeNow,
+                        .findByItemOwnerIdAndStartIsBeforeAndEndIsAfter(userId, dateTimeNow,
                                 dateTimeNow, sort);
                 break;
             }
@@ -124,7 +124,7 @@ public class BookingServiceImpl implements BookingService {
             }
             case FUTURE -> {
                 bookingList = bookingDBRepository
-                        .findByItemOwnerIdAndStartIsAfterAndStatusNotRejectedAndStatusNotCanceledIgnoreCase(userId, dateTimeNow, sort);
+                        .findByItemOwnerIdAndStartIsAfter(userId, dateTimeNow, sort);
                 break;
             }
             case WAITING -> {
