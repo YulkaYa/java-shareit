@@ -7,9 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.practicum.shareit.exception.DuplicatedDataException;
+import ru.practicum.shareit.user.dal.UserDBRepository;
 import ru.practicum.shareit.user.dto.UserDto;
 
+import java.nio.charset.StandardCharsets;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -23,7 +28,8 @@ class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
+    @MockBean
+    private UserDBRepository userDBRepository;
     @MockBean
     private UserService userService;
 
@@ -59,7 +65,6 @@ class UserControllerTest {
         assertEquals(objectMapper.writeValueAsString(userDto), result);
     }
 
-
     @SneakyThrows
     @Test
     void updateTest() {
@@ -76,6 +81,24 @@ class UserControllerTest {
 
         verify(userService, times(1)).update(any(Long.class), any(UserDto.class));
         assertEquals(objectMapper.writeValueAsString(userDtoUpdated), result);
+    }
+
+    @SneakyThrows
+    @Test
+    void updateTest_DuplicateUser_Negative() {
+
+        when(userService.update(userId, userDto)).thenThrow(new DuplicatedDataException("Данный имейл уже используется"));
+
+        String result = mockMvc.perform(patch("/users/{userId}", userId)
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(userDto)))
+                .andExpect(status().isConflict())
+                .andReturn()
+                .getResponse()
+                .getContentAsString(StandardCharsets.UTF_8);
+
+        verify(userDBRepository, times(0)).update(any(User.class));
+        assertTrue(result.contains("Данный имейл уже используется"));
     }
 
     @SneakyThrows

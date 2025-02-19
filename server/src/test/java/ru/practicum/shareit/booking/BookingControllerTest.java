@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.practicum.shareit.booking.dal.BookingDBRepository;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingDtoCreated;
+import ru.practicum.shareit.exception.ConditionsNotMetException;
 import ru.practicum.shareit.item.dto.ItemDtoBase;
 import ru.practicum.shareit.user.dto.UserDto;
 
@@ -35,6 +37,8 @@ class BookingControllerTest {
 
     @MockBean
     private BookingService bookingService;
+    @MockBean
+    private BookingDBRepository bookingDBRepository;
 
     private final Long requestId = 1L;
     private final Long itemId = 2L;
@@ -74,6 +78,25 @@ class BookingControllerTest {
 
         verify(bookingService, times(1)).create(anyLong(), any(BookingDtoCreated.class));
         assertEquals(objectMapper.writeValueAsString(bookingDto), result);
+    }
+
+    @SneakyThrows
+    @Test
+    void createTest_IsNotAvailable_Negative() {
+
+        when(bookingService.create(userId, bookingDtoCreated)).thenThrow(new ConditionsNotMetException("Товар с id недоступен для бронирования"));
+
+        String result = mockMvc.perform(post("/bookings")
+                        .header("X-Sharer-User-Id", userId)
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(bookingDtoCreated)))
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString(StandardCharsets.UTF_8);
+
+        verify(bookingDBRepository, times(0)).save(any(Booking.class));
+        assertTrue(result.contains("Товар с id недоступен для бронирования"));
     }
 
     @SneakyThrows
