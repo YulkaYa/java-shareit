@@ -45,13 +45,13 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDtoWithoutDates create(long userId, ItemDtoWithoutDates itemDtoWithoutDates) {
         User owner = userRepository.findById(userId).orElseThrow(() ->
-                new NotFoundException("Пользователь с id = " + userId + "не найден"));
+                new NotFoundException("Пользователь с id = " + userId + " не найден"));
         itemDtoWithoutDates.setOwnerId(userId);
         long requestId =  itemDtoWithoutDates.getRequestId();
         Item item;
         if (requestId != 0) {
             ItemRequest itemRequest = itemRequestDBRepository.findById(itemDtoWithoutDates.getRequestId()).orElseThrow(() ->
-            new NotFoundException(" Запрос с id = " + userId + "не найден"));
+            new NotFoundException(" Запрос с id = " + userId + " не найден"));
             item = itemMapper.toItemWithRequest(itemDtoWithoutDates, owner, itemRequest);
         } else {
             item = itemMapper.toItemWithoutRequest(itemDtoWithoutDates, owner);
@@ -143,9 +143,5 @@ public class ItemServiceImpl implements ItemService {
         Comment comment = (commentMapper.commentDtoOnlyTextToComment(commentDtoOnlyText, item, author));
         comment = commentDBRepository.save(comment);
         return commentMapper.commentToCommentDto(comment);
-    }
-
-    public List<ItemDtoWithoutDates> getItemsByRequestId(long requestId) {
-        return itemMapper.listItemToListItemDtoWithoutDates(itemRepository.findByRequestId(requestId));
     }
 }
