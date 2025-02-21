@@ -1,0 +1,78 @@
+package ru.practicum.shareit.request;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.mapstruct.factory.Mappers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import ru.practicum.shareit.exception.NotFoundException;
+import ru.practicum.shareit.item.dal.item.ItemBaseRepository;
+import ru.practicum.shareit.item.dal.item.ItemMapper;
+import ru.practicum.shareit.item.dto.ItemDtoWithoutDates;
+import ru.practicum.shareit.request.dal.ItemRequestDBRepository;
+import ru.practicum.shareit.request.dal.ItemRequestMapper;
+import ru.practicum.shareit.request.dto.ItemRequestBaseDto;
+import ru.practicum.shareit.request.dto.ItemRequestCreatedDto;
+import ru.practicum.shareit.request.dto.ItemRequestDtoWithItems;
+import ru.practicum.shareit.user.User;
+import ru.practicum.shareit.user.dal.UserBaseRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+@Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+public class ItemRequestServiceImpl implements ItemRequestService {
+    private final ItemBaseRepository itemBaseRepository;
+    private final ItemRequestDBRepository itemRequestDBRepository;
+    private final UserBaseRepository userRepository;
+    private final ItemMapper itemMapper = Mappers.getMapper(ItemMapper.class);
+    private final ItemRequestMapper itemRequestMapper = Mappers.getMapper(ItemRequestMapper.class);
+
+
+    @Override
+    public ItemRequestBaseDto create(long userId, ItemRequestCreatedDto itemRequestCreatedDto) {
+        User requestor = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Пользователь с id = " + userId + "не найден"));
+        ItemRequest itemRequest = itemRequestMapper.toItemRequest(itemRequestCreatedDto, requestor);
+        return itemRequestMapper.toItemRequestBaseDto(itemRequestDBRepository.save(itemRequest));
+    }
+
+    @Override
+    public List<ItemRequestDtoWithItems> getItemsRequestsByUserId(long requestorId) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "created");
+        List<ItemRequest> itemRequests = itemRequestDBRepository.findByRequestorId(requestorId, sort);
+        return getItemsByRequest(itemRequests);
+    }
+
+    @Override
+    public List<ItemRequestDtoWithItems> getRequestsFromOtherUsers(long requestorId) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "created");
+        List<ItemRequest> itemRequests = itemRequestDBRepository.findAllByRequestorIdNot(requestorId, sort);
+        return getItemsByRequest(itemRequests);
+    }
+
+    @Override
+    public ItemRequestDtoWithItems getItemsRequestsByRequestId(long requestId) {
+        ItemRequest itemRequest = itemRequestDBRepository.findById(requestId)
+                .orElseThrow(() -> new NotFoundException("Запрос с id = " + requestId + "не найден"));
+        return itemRequestMapper.toItemRequestDtoWithItems(itemRequest, getItemsByRequestId(requestId));
+    }
+
+    // вспомогательный метод для получения списка предметов, найденных по id запроса
+    private List<ItemDtoWithoutDates> getItemsByRequestId(long requestId) {
+            return itemMapper.listItemToListItemDtoWithoutDates(itemBaseRepository.findByRequestId(requestId));
+    }
+
+    // вспомогательный метод для получения списка запросов с товарами к ним, найденных по списку запросов
+    private List<ItemRequestDtoWithItems> getItemsByRequest(List<ItemRequest> itemRequests) {
+        List<ItemRequestDtoWithItems> listItemRequestDtoWithItems = new ArrayList<>();
+        for (ItemRequest itemRequest:itemRequests) {
+            ItemRequestDtoWithItems itemRequestDtoWithItems = itemRequestMapper.toItemRequestDtoWithItems(itemRequest, getItemsByRequestId(itemRequest.getId()));
+            listItemRequestDtoWithItems.add(itemRequestDtoWithItems);
+        }
+        return listItemRequestDtoWithItems;
+    }
+}
